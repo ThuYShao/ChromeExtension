@@ -1,6 +1,6 @@
 var baseUrl = "http://127.0.0.1:8000";
 // var baseUrl = "http://166.111.138.86:15016";
-var checkUrl = baseUrl + "/user/check/";
+var checkUrl = baseUrl + "/user/check/"; // verify user
 var dataUrl = baseUrl + "/task/data/";
 var username, password;
 var version = "1.0";

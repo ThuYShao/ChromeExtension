@@ -2,8 +2,8 @@
 var baseUrl = "http://127.0.0.1:8000";
 var checkUrl = baseUrl + "/user/check/";
 var registerUrl = baseUrl + "/user/signup/";
-var feedbackUrl = baseUrl + "/task/home/";
-var downloadLink = "";
+//var feedbackUrl = baseUrl + "/task/home/";
+//var downloadLink = "";
 
 function userTab() {
     $("#failMsg1").hide();
@@ -56,10 +56,10 @@ function verifyUser() {
 
 function register() {
     window.open(registerUrl);
-}
+} 
 
 function trylogin() {
-    //console.log("logging...");
+    console.log("extension logging...");
     localStorage['password'] = "" + $("#psw").val();
     localStorage['username'] = "" + $("#username").val();
     var verified = verifyUser();
@@ -87,14 +87,14 @@ function trylogin() {
     }
 }
 
-function feedback() {
+/*function feedback() {
     if (confirm("提示: 若正在进行搜索任务(搜索页面未关闭),请在进行标注前关闭搜索页面!\n若没有请忽略此信息"))
         window.open(feedbackUrl);
-}
+}*/
 
-function download() {
+/*function download() {
     window.open(downloadLink, '_blank');
-}
+}*/
 
 function logout() {
     localStorage['username'] = null;
@@ -108,8 +108,8 @@ if (jQuery) {
     loginTab();
     $("#bt1").click(register);
     $("#bt2").click(trylogin);
-    $("#bt4").click(feedback);
-    $("#bt8").click(feedback);
+    //$("#bt4").click(feedback);
+    //$("#bt8").click(feedback);
     $("#bt6").click(logout);
     if (verifyUser() == 0) {
         userTab();

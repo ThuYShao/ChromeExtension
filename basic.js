@@ -408,7 +408,7 @@ var viewState = {
         msg.serp_link = current_serp_link;
 
         if (origin != "???") {
-            msg.type = "SERP";
+            msg.type = "SERP"; //记录SERP的信息？syq 待定
             msg.origin = origin;
             msg.query = mPage.getQuery();//不应该实时取,应该读取当前保存的,否则监测到url变化但页面没刷新的情况就会出错.值的更新应该在initialize时完成
             msg.page_id = mPage.getPageId();//同上

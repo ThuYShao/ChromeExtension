@@ -50,15 +50,6 @@
       "run_at": "document_start"
     },
     // content-script可以配置多个规则
-    /*{
-      "matches": [
-        "*://www.baidu.com/s*"
-      ],
-      "js": [
-        "baidu.js"
-      ],
-      "run_at": "document_start"
-    },*/
     {
       "matches": [
         "*://www.sogou.com/web?query=*"
@@ -68,14 +59,5 @@
       ],
       "run_at": "document_start"
     }
-    /*{
-      "matches": [
-        "*://www.so.com/s*"
-      ],
-      "js": [
-        "360.js"
-      ],
-      "run_at": "document_start"
-    }*/
   ]
 }

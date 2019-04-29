@@ -35,12 +35,13 @@ var mPage = {
     /**
      * 点击事件的处理
      */
-    click: function (link_obj, type, id) {
+    click: function (link_obj, type, id, father_id) {
         var new_click = {
             href: $(link_obj).attr("href"),
-            type: type,
-            id: id
-        };
+            type: type, 
+            id: id, 
+            father_id: father_id
+        }; // add father_id, -1 from left, >=1 from kmap_entity
         mPage.click_results.push(new_click);
     },
     lastUpdate: 0,

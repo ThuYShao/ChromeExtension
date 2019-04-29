@@ -48,12 +48,12 @@ function storage_link() {
  */
 chrome.runtime.sendMessage({log_status: "request"}, function (response) {
     if (response.log_status == true) {
-        storage_link();
+        storage_link(); // 存储当前链接
         if (debug) console.log("content.js is loaded");
         /**
          * 页面初始化
          */
-        viewState.initialize();
+        viewState.initialize(); // 页面初始化, viewState对应相关page
         if (debug) console.log("initialize done");
         /**
          * 监听页面变化
