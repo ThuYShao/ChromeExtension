@@ -32,12 +32,12 @@ var msg = {
      * 页面类型
      * "SERP": 搜索页面
      * "general": 非搜索页面
-     */
-    type: "",
-    /**
+    */ 
+    //type: "", //只记录SERP页面的
+        /**
      * SERP页面源
-     * "baidu/sogou/360": 搜索页面
-     * "": 非搜索页面
+     * "sogou/": 搜索页面
+     * "search/": 服务器页面
      */
     origin: "",
     /**
@@ -47,12 +47,12 @@ var msg = {
     /**
      * 直接来源网址
      */
-    referrer: "",
+    //referrer: "",
     /**
      * 在SERP上的来源网址
      * SERP自己的来源是空的
      */
-    serp_link: "",
+    //serp_link: "",
     /**
      * 搜索查询词
      */
@@ -77,23 +77,27 @@ var msg = {
      */
     clicked_results: "",
 
+    /**
+    * 为一个hoverRes数组
+    * 所有hover结果的信息
+    */
+    hovers: ""
+
     initialize: function () {
         msg.send_flag = true;
+        msg.username = "";
         msg.start_timestamp = 0;
         msg.end_timestamp = 0;
         msg.dwell_time = 0;
         msg.page_timestamps = new Array();
-        msg.type = "";
         msg.origin = "";
         msg.url = "";
-        msg.referrer = "";
-        msg.serp_link = "";
         msg.query = "";
         msg.page_id = 0;
         msg.html = "";
         msg.mouse_moves = "";
         msg.clicked_results = "";
-        msg.username = "";
+        msg.hovers = "";
     }
 };
 
@@ -291,6 +295,7 @@ var viewState = {
     },
     /**
      * 页面关闭
+     * 关闭页面时会发送msg
      */
     close: function () {
         viewState.sendMessage();
@@ -311,25 +316,15 @@ var viewState = {
         viewState.lastOp = (new Date()).getTime();
 
         var origin = "???";
-        var temp = window.location.href.match(/www\.(baidu)?(sogou)?(so)?\.com\/(s|web)/g);
-        if (temp != null) { //SERP页面
-            switch (temp[0]) {
-                case "www.sogou.com/web":
-                    origin = "sogou";
-                    break;
-
-                case "www.baidu.com/s":
-                    origin = "baidu";
-                    break;
-
-                case "www.so.com/s":
-                    origin = "360";
-                    break;
-
-                default:
-                    break;
-            }
+        var temp_sogou = window.location.href.match(/www\.sogou\.com\/web/g);
+        var temp_server = window.location.href.match(/exp_domain_expertise\/\d+\/search/g);
+        if (temp_sogou != null){ // from sogou SERP
+            origin = "sogou";
         }
+        else if (temp_server != null){ // from server SERP
+            origin = "server"; 
+        }
+
         if (debug) {
             console.log("origin=" + origin);
             console.log(viewState);
@@ -345,9 +340,9 @@ var viewState = {
              */
             $(window).bind('mousemove', viewState.mMove);
             $(window).bind('scroll', viewState.mScroll);
-            //$(window).mousemove(viewState.mMove);
-            //$(window).scroll(viewState.mScroll);
+
             /**
+             * 发送执行脚本的请求
              * 执行相应搜索引擎的页面脚本
              */
             chrome.runtime.sendMessage({file: origin + ".js"}, function (response) {
@@ -360,14 +355,14 @@ var viewState = {
                 }
             });
         }
-        else { //非SERP页面
-            if (debug) console.log("extension is working on general page");
+        else { //非SERP页面, 不进行任何记录
+            if (debug) console.log("extension is working on untracking page");
             $(window).unbind('mousemove', viewState.mMove);
             $(window).unbind('scroll', viewState.mScroll);
-            pageManager.initialize();
-            mPage.initialize();
-            mRec.initialize();
-            viewState.check();
+            //pageManager.initialize();
+            //mPage.initialize();
+            //mRec.initialize();
+            //viewState.check();
         }
 
     },
@@ -379,36 +374,22 @@ var viewState = {
         pageManager.getOut();
         mRec.end();
         var origin = "???";
-        var temp = current_url.match(/www\.(baidu)?(sogou)?(so)?\.com\/(s|web)/g);
-        if (temp != null) { //SERP页面
-            switch (temp[0]) {
-                case "www.sogou.com/web":
-                    origin = "sogou";
-                    break;
-
-                case "www.baidu.com/s":
-                    origin = "baidu";
-                    break;
-
-                case "www.so.com/s":
-                    origin = "360";
-                    break;
-
-                default:
-                    break;
-            }
+        var temp_sogou = window.location.href.match(/www\.sogou\.com\/web/g);
+        var temp_server = window.location.href.match(/exp_domain_expertise\/\d+\/search/g);
+        if (temp_sogou != null){ // from sogou SERP
+            origin = "sogou";
         }
-
+        else if (temp_server != null){ // from server SERP
+            origin = "server"; 
+        }
+        
         msg.start_timestamp = pageManager.start_timestamp;
         msg.end_timestamp = pageManager.end_timestamp;
         msg.dwell_time = pageManager.dwell_time;
         msg.page_timestamps = JSON.stringify(pageManager.page_timestamps);
         msg.url = current_url;
-        msg.referrer = current_referrer;
-        msg.serp_link = current_serp_link;
 
         if (origin != "???") {
-            msg.type = "SERP"; //记录SERP的信息？syq 待定
             msg.origin = origin;
             msg.query = mPage.getQuery();//不应该实时取,应该读取当前保存的,否则监测到url变化但页面没刷新的情况就会出错.值的更新应该在initialize时完成
             msg.page_id = mPage.getPageId();//同上
@@ -418,9 +399,10 @@ var viewState = {
             msg.mouse_moves = JSON.stringify(mRec.getData());
             //msg.clicked_results = pako.deflate(JSON.stringify(mPage.getClickedResults()), {to: 'string'});
             msg.clicked_results = JSON.stringify(mPage.getClickedResults());
-        }
-        else {
-            msg.type = "general";
+            /**
+            * 需要增加hover信息
+            */
+            msg.hovers = "";
         }
 
         chrome.runtime.sendMessage(msg);
