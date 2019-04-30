@@ -1,5 +1,5 @@
-var debug = false;
-var debug1 = false;
+var debug = true;
+var debug1 = true;
 //var debug = true;
 //var debug1 = true;
 var current_url = window.location.href;

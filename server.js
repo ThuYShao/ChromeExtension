@@ -4,6 +4,7 @@ var checkUrl = baseUrl + "/user/check/"; // verify user
 var dataUrl = baseUrl + "/exp_domain_expertise/data/"; // save data
 var taskUrl = baseUrl + "/exp_domain_expertise/task_type/"; //get task type (if right)
 var username, password;
+var debug = true; 
 
 // get right type save in local storage
 function get_task_type(){
@@ -33,4 +34,6 @@ function get_task_type(){
         }
     });
 }
+
+var task_type = get_task_type();
 

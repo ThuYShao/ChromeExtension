@@ -5,7 +5,7 @@ var dataUrl = baseUrl + "/exp_domain_expertise/data/"; // save data
 var taskUrl = baseUrl + "/exp_domain_expertise/task_type/"
 var username, password;
 var version = "1.0";
-var debug1 = false;
+var debug1 = true;
 //var debug1 = true;
 var lastReminder = 0;
 
@@ -94,35 +94,25 @@ flush();
 function request_right(Url){
     var result= -1 ;
     username = localStorage['username'];
-    password = localStorage['password'];
-    var verified = verifyUser();
-    if (verified != 0) {
-        if (debug1) {
-            console.log('verify user fail') ;
-            return result;
-        }
-    }
     $.ajax
     ({
         type: "POST",
         url: taskUrl,
         dataType: 'json',
         async: false,
-        data: {username: name, password: psw, url: Url},
-        success: function (data, _id) {
-            if (data == 0) {
-                result = 0;
-                localStorage['task_id'] = _id;
-            }
-            else if (data == 1) {
-                result = 1;
-                localStorage['task_id'] = _id; // save task_id in localStorage
-            }
+        data: {username: username, url: Url},
+        success: function (data) {
+            if (debug1) console.log(data);
+            localStorage['task_id'] = data.task_id ;
+            result = data.task_type;
+            // console.log(localStorage['task_id']);
         },
         error: function () {
             result = -1;
         }
     });
+    // console.log(result);
+    return result; 
 }
 
 
