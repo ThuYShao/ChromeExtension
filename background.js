@@ -2,6 +2,7 @@ var baseUrl = "http://127.0.0.1:8000";
 // var baseUrl = "http://166.111.138.86:15016";
 var checkUrl = baseUrl + "/user/check/"; // verify user
 var dataUrl = baseUrl + "/exp_domain_expertise/data/"; // save data
+var taskUrl = baseUrl + "exp_domain_expertise/task_type/"
 var username, password;
 var version = "1.0";
 var debug1 = false;
@@ -90,6 +91,42 @@ function flush() {
 flush();
 
 
+function request_right(Url){
+    var result= -1 ;
+    username = localStorage['username'];
+    password = localStorage['password'];
+    var verified = verifyUser();
+    if (verified != 0) {
+        if (debug1) {
+            console.log('verify user fail') ;
+            return result;
+        }
+    }
+    $.ajax
+    ({
+        type: "POST",
+        url: taskUrl,
+        dataType: 'json',
+        async: false,
+        data: {username: name, password: psw, url: Url},
+        success: function (data, _id) {
+            if (data == 0) {
+                result = 0;
+                localStorage['task_id'] = _id;
+            }
+            else if (data == 1) {
+                result = 1;
+                localStorage['task_id'] = _id; // save task_id in localStorage
+            }
+        },
+        error: function () {
+            result = -1;
+        }
+    });
+}
+
+
+
 /**
  * 用来进行不同的通讯
  *
@@ -98,6 +135,7 @@ flush();
  * popup.js 会传递用户名和密码
  *
  * basic.js 会要求发送所有信息
+ * sercer.js 会要求获得当前task的类别
  */
 chrome.runtime.onMessage.addListener(function (Msg, sender, sendResponse) {
     if (debug1) console.log(Msg);
@@ -115,6 +153,14 @@ chrome.runtime.onMessage.addListener(function (Msg, sender, sendResponse) {
             chrome.browserAction.setBadgeText({text: ''});
         return;
     }
+    /**
+     * 监听获取当前任务类型的请求
+     */
+     if(Msg.task_type == "request"){
+        var right = request_right(Msg.url); 
+        sendResponse({task_type: right}); 
+        return; 
+     }
     /**
      * 监听到储存serp_link链接关系请求
      */
