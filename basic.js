@@ -349,8 +349,8 @@ var viewState = {
                 if (response.scriptFinish == true) {
                     if (debug) console.log("execute script done");
                     pageManager.initialize();
-                    mPage.initialize();
-                    mRec.initialize();
+                    mPage.initialize(); // 管理页面信息
+                    mRec.initialize(); //记录鼠标移动和滚动的对象
                     viewState.check();
                 }
             });

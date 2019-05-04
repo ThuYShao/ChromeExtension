@@ -14,29 +14,35 @@ function get_task_type(){
     chrome.runtime.sendMessage({task_type: "request", url: server_url}, function (response) {
         if (debug) console.log(response); 
         if (response.task_type == 1) {
-            if (debug) {
+            /*if (debug) {
                 console.log('get task_type');
                 console.log(response.task_type); 
-            }
+            }*/
             localStorage['task_type'] = 1;
             return;
         }else if (response.task_type == 0) {
-            if (debug) {
+            /*if (debug) {
                 console.log('get task_type, right = 0');
                 console.log(response.task_type);
-            }
+            }*/
             localStorage['task_type'] = 0;
             return; 
         }else{
-            if (debug) {
+            /*if (debug) {
                 console.log('get task_type failed, right=1');
                 console.log(response.task_type);
-            }
+            }*/
             localStorage['task_type'] = 1;
             return;
         }
     });
 }
 
-var task_type = get_task_type();
+get_task_type();
+
+if (debug) {
+    console.log('get task_id and task_type in server page');
+    console.log(localStorage['task_id']); 
+    console.log(localStorage['task_type']);
+}
 
