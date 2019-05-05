@@ -81,7 +81,7 @@ var msg = {
     * 为一个hoverRes数组
     * 所有hover结果的信息
     */
-    hovers: ""
+    hover_results: ""
 
     initialize: function () {
         msg.send_flag = true;
@@ -97,7 +97,7 @@ var msg = {
         msg.html = "";
         msg.mouse_moves = "";
         msg.clicked_results = "";
-        msg.hovers = "";
+        msg.hover_results = "";
     }
 };
 
@@ -399,10 +399,7 @@ var viewState = {
             msg.mouse_moves = JSON.stringify(mRec.getData());
             //msg.clicked_results = pako.deflate(JSON.stringify(mPage.getClickedResults()), {to: 'string'});
             msg.clicked_results = JSON.stringify(mPage.getClickedResults());
-            /**
-            * 需要增加hover信息
-            */
-            msg.hovers = "";
+            msg.hover_results = JSON.stringify(mPage.getHoverResults());
         }
 
         chrome.runtime.sendMessage(msg);

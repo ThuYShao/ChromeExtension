@@ -4,6 +4,7 @@ var mPage = {
      * 返回值
      */
     click_results: new Array(),
+    hover_results: new Array(), 
     query: "",
     page_id: 0,
     html: null,
@@ -32,6 +33,10 @@ var mPage = {
     getClickedResults: function () {
         return mPage.click_results;
     },
+    
+    getHoverResults: function() {
+        return mPage.hover_results; 
+    }, 
     /**
      * 点击事件的处理
      */
@@ -44,6 +49,19 @@ var mPage = {
         }; // add father_id, -1 from left, >=1 from kmap_entity
         mPage.click_results.push(new_click);
     },
+    /**
+     * 悬停事件的处理
+     */
+    hover: function(link_obj, type, id, father_id){
+        var new_hover = {
+            href: $(link_obj).attr("href"), 
+            type: type, 
+            id: id,
+            father_id: father_id
+        };
+        mPage.hover_results.push(new_hover);
+    }, 
+
     lastUpdate: 0,
     /**
      * 更新页面的click绑定
@@ -58,6 +76,7 @@ var mPage = {
      */
     initialize: function () {
         mPage.click_results = new Array();
+        mPage.hover_results = new Array(); 
         if (debug) console.log("mPage initialize");
     }
 };

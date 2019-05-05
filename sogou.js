@@ -34,7 +34,7 @@ mPage.update = function () {
             if ($(child_element).attr("bindClick") == undefined) {
                 $(child_element).attr("bindClick", true);
                 $(child_element).click(function () {
-                    mPage.click($(this).get(0), "content", -1 ,id+1);
+                    mPage.click($(this).get(0), "left", id+1, -1);
                 });
             }
         });
@@ -46,7 +46,7 @@ mPage.update = function () {
             if ($(child_element).attr("bindHover") == undefined) {
                 $(child_element).attr("bindHover", true);
                 $(child_element).hover(function () {
-                    mPage.hover($(this).get(0), "content", -1 ,id+1);
+                    mPage.hover($(this).get(0), "left", id+1 ,-1);
                 });
             }
         });
@@ -59,7 +59,7 @@ mPage.update = function () {
                 if($(child_element).attr("bindClick") == undefined){
                     $(child_element).attr("bindClick", true);
                     $(child_element).click(function(){
-                        mPage.click($(this).get(0), "content", id+1, li_id+1)
+                        mPage.click($(this).get(0), "right", li_id+1, id+1)
                     });
                 }
             });
@@ -74,7 +74,7 @@ mPage.update = function () {
                 if($(child_element).attr("bindHover") == undefined){
                     $(child_element).attr("bindHover", true);
                     $(child_element).hover(function(){
-                        mPage.hover($(this).get(0), "content", id+1, li_id+1)
+                        mPage.hover($(this).get(0), "right", li_id+1, id+1)
                     });
                 }
             });
