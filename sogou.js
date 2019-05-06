@@ -1,5 +1,6 @@
 if (debug) console.log("Sogou Main Page is Loaded!");// remove suggested query on the top, mid and bottom
 
+// 根据task_type去掉右边
 if (localStorage['task_type'] != undefined && localStorage['task_type'] == 0){
     if (debug) console.log('remove right according to task_type in localStorage')
     $("#right").remove();
@@ -20,6 +21,7 @@ $("div.sponsored").remove();
 
 //不同页面的initialize和update不同 
 mPage.initialize = function () {
+    mPage.url = window.location.href;
     mPage.query = $("#upquery").val();
     mPage.page_id = parseInt($("#pagebar_container span").text());
     mPage.html = document.documentElement.outerHTML;

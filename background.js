@@ -184,6 +184,7 @@ chrome.runtime.onMessage.addListener(function (Msg, sender, sendResponse) {
      */
     if (Msg.send_flag == true) {
         Msg.username = localStorage['username'];
+        Msg.task_id = localStorage['task_id'];
         Msg = JSON.stringify(Msg);
         sendInfo(Msg);//交给发送吧
     }

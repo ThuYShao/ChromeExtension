@@ -1,11 +1,3 @@
-//var baseUrl = "http://127.0.0.1:8000";
-// var baseUrl = "http://166.111.138.86:15016";
-//var checkUrl = baseUrl + "/user/check/"; // verify user
-//var dataUrl = baseUrl + "/exp_domain_expertise/data/"; // save data
-//var taskUrl = baseUrl + "/exp_domain_expertise/task_type/"; //get task type (if right)
-//var username, password;
-//var debug = true; 
-
 if (debug) console.log('Server Mainpage is loaded')
 
 // get right type save in local storage
@@ -45,4 +37,74 @@ if (debug) {
     console.log(localStorage['task_id']); 
     console.log(localStorage['task_type']);
 }
+
+//initialize
+mPage.initialize = function () {
+    mPage.url = window.location.href;
+    mPage.query = $("#upquery").val();
+    mPage.page_id = parseInt($("#pagebar_container span").text());
+    mPage.html = document.documentElement.outerHTML;
+};
+
+setTimeout(mPage.initialize, 3000);
+
+
+// 绑定click和hover信息
+mPage.update = function () {
+    // 记录左边结果的点击信息
+    $("div.results").children("div").each(function (id, element) {
+        $(element).find("a").each(function (child_id, child_element) {
+            if ($(child_element).attr("bindClick") == undefined) {
+                $(child_element).attr("bindClick", true);
+                $(child_element).click(function () {
+                    mPage.click($(this).get(0), "left", id+1, -1);
+                });
+            }
+        });
+    });
+
+    // 记录左边结果的hover信息
+    $("div.results").children("div").each(function (id, element) {
+        $(element).find("a").each(function (child_id, child_element) {
+            if ($(child_element).attr("bindHover") == undefined) {
+                $(child_element).attr("bindHover", true);
+                $(child_element).hover(function () {
+                    mPage.hover($(this).get(0), "left", id+1 ,-1);
+                });
+            }
+        });
+    });
+
+    // 记录右边kmap_entity_div结果点击信息
+    $("div.rvr-model#kmap_entity_div").children("ul").each(function(id, element){
+        $(element).children("li").each(function(li_id, li_element){
+            $(li_element).find("a").each(function (child_id, child_element){
+                if($(child_element).attr("bindClick") == undefined){
+                    $(child_element).attr("bindClick", true);
+                    $(child_element).click(function(){
+                        mPage.click($(this).get(0), "right", li_id+1, id+1)
+                    });
+                }
+            });
+        });
+    });
+
+
+    // 记录右边结果kmap_entity_div结果hover信息
+    $("div.rvr-model#kmap_entity_div").children("ul").each(function(id, element){
+        $(element).children("li").each(function(li_id, li_element){
+            $(li_element).find("a").each(function (child_id, child_element){
+                if($(child_element).attr("bindHover") == undefined){
+                    $(child_element).attr("bindHover", true);
+                    $(child_element).hover(function(){
+                        mPage.hover($(this).get(0), "right", li_id+1, id+1)
+                    });
+                }
+            });
+        });
+    });
+
+    // 需要增加kmap_relation_div结果点击信息
+    // 需要增加kmap_relation_div结果hover 信息
+};
 

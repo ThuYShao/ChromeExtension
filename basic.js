@@ -9,6 +9,10 @@ var msg = {
      */
     username: "",
     /**
+     * task_id, 用来对应task_id
+     */
+    task_id: "", 
+    /**
      * 开始创建时间
      * 单位ms
      */
@@ -29,12 +33,6 @@ var msg = {
      */
     page_timestamps: new Array(),
     /**
-     * 页面类型
-     * "SERP": 搜索页面
-     * "general": 非搜索页面
-    */ 
-    //type: "", //只记录SERP页面的
-        /**
      * SERP页面源
      * "sogou/": 搜索页面
      * "search/": 服务器页面
@@ -44,15 +42,6 @@ var msg = {
      * 网页链接
      */
     url: "",
-    /**
-     * 直接来源网址
-     */
-    //referrer: "",
-    /**
-     * 在SERP上的来源网址
-     * SERP自己的来源是空的
-     */
-    //serp_link: "",
     /**
      * 搜索查询词
      */
@@ -76,16 +65,32 @@ var msg = {
      * 所有点击结果的信息
      */
     clicked_results: "",
-
     /**
     * 为一个hoverRes数组
     * 所有hover结果的信息
     */
-    hover_results: ""
+    hover_results: "", 
+
+    /**
+     * 直接来源网址
+     */
+    //referrer: "",
+    /**
+     * 在SERP上的来源网址
+     * SERP自己的来源是空的
+     */
+    //serp_link: "",
+    /**
+     * 页面类型
+     * "SERP": 搜索页面
+     * "general": 非搜索页面
+    */ 
+    //type: "", //只记录SERP页面的
 
     initialize: function () {
         msg.send_flag = true;
         msg.username = "";
+        msg.task_id = ""; 
         msg.start_timestamp = 0;
         msg.end_timestamp = 0;
         msg.dwell_time = 0;
@@ -304,17 +309,6 @@ var viewState = {
      * 页面初始化
      */
     initialize: function () {
-        document.addEventListener("visibilitychange", function (event) {
-            var hidden = event.target.webkitHidden;
-            if (hidden) viewState.tabLeave();
-            else viewState.tabEnter();
-        }, false);
-        window.onbeforeunload = viewState.close;
-        $(window).focus(viewState.focus);
-        $(window).blur(viewState.blur);
-        viewState.show = true;
-        viewState.lastOp = (new Date()).getTime();
-
         var origin = "???";
         var temp_sogou = window.location.href.match(/www\.sogou\.com\/web/g);
         var temp_server = window.location.href.match(/exp_domain_expertise\/\d+\/search/g);
@@ -325,22 +319,22 @@ var viewState = {
             origin = "server"; 
         }
 
-        if (debug) {
-            console.log("origin=" + origin);
-            console.log(viewState);
-            console.log(pageManager);
-            console.log(mPage);
-            console.log(mRec);
-        }
+        if (origin != "???"){
+            if (debug) console.log("extension is working on SERP, origin=" + origin);
 
-        if (origin != "???") { //SERP页面
-            if (debug) console.log("extension is working on SERP");
-            /**
-             * SERP页面才会记录鼠标移动和点击信息
-             */
+            document.addEventListener("visibilitychange", function (event) {
+                var hidden = event.target.webkitHidden;
+                if (hidden) viewState.tabLeave();
+                else viewState.tabEnter();
+            }, false);
+            window.onbeforeunload = viewState.close;
+            $(window).focus(viewState.focus);
+            $(window).blur(viewState.blur);
+            viewState.show = true;
+            viewState.lastOp = (new Date()).getTime();
+
             $(window).bind('mousemove', viewState.mMove);
             $(window).bind('scroll', viewState.mScroll);
-
             /**
              * 发送执行脚本的请求
              * 执行相应搜索引擎的页面脚本
@@ -356,13 +350,9 @@ var viewState = {
             });
         }
         else { //非SERP页面, 不进行任何记录
-            if (debug) console.log("extension is working on untracking page");
-            $(window).unbind('mousemove', viewState.mMove);
-            $(window).unbind('scroll', viewState.mScroll);
-            //pageManager.initialize();
-            //mPage.initialize();
-            //mRec.initialize();
-            //viewState.check();
+            if (debug) console.log("extension is working on untracking page, nothing works");
+            //$(window).unbind('mousemove', viewState.mMove);
+            //$(window).unbind('scroll', viewState.mScroll);
         }
 
     },
@@ -370,9 +360,6 @@ var viewState = {
      * 发送信息
      */
     sendMessage: function () {
-        if (debug) console.log("send message");
-        pageManager.getOut();
-        mRec.end();
         var origin = "???";
         var temp_sogou = window.location.href.match(/www\.sogou\.com\/web/g);
         var temp_server = window.location.href.match(/exp_domain_expertise\/\d+\/search/g);
@@ -382,27 +369,27 @@ var viewState = {
         else if (temp_server != null){ // from server SERP
             origin = "server"; 
         }
-        
-        msg.start_timestamp = pageManager.start_timestamp;
-        msg.end_timestamp = pageManager.end_timestamp;
-        msg.dwell_time = pageManager.dwell_time;
-        msg.page_timestamps = JSON.stringify(pageManager.page_timestamps);
-        msg.url = current_url;
 
-        if (origin != "???") {
-            msg.origin = origin;
-            msg.query = mPage.getQuery();//不应该实时取,应该读取当前保存的,否则监测到url变化但页面没刷新的情况就会出错.值的更新应该在initialize时完成
-            msg.page_id = mPage.getPageId();//同上
-            //msg.html = pako.deflate(mPage.getHtml(), {to: 'string'});
+        if (origin != "???"){
+            if (debug) console.log("in SERP, send message");
+            pageManager.getOut();
+            mRec.end();
+
+            msg.start_timestamp = pageManager.start_timestamp;
+            msg.end_timestamp = pageManager.end_timestamp;
+            msg.dwell_time = pageManager.dwell_time;
+            msg.page_timestamps = JSON.stringify(pageManager.page_timestamps);
+            msg.url = mPage.getURL();
+
+            msg.origin = origin; 
+            msg.query = mPage.getQuery();
+            msg.page_id = mPage.getPageId();
             msg.html = mPage.getHtml();
-            //msg.mouse_moves = pako.deflate(JSON.stringify(mRec.getData()), {to: 'string'});
             msg.mouse_moves = JSON.stringify(mRec.getData());
-            //msg.clicked_results = pako.deflate(JSON.stringify(mPage.getClickedResults()), {to: 'string'});
             msg.clicked_results = JSON.stringify(mPage.getClickedResults());
             msg.hover_results = JSON.stringify(mPage.getHoverResults());
+            chrome.runtime.sendMessage(msg);
+            msg.initialize();
         }
-
-        chrome.runtime.sendMessage(msg);
-        msg.initialize();
     }
 };
