@@ -40,7 +40,6 @@ if (debug) {
 
 //initialize
 mPage.initialize = function () {
-    mPage.url = window.location.href;
     mPage.query = $("#upquery").val();
     mPage.page_id = parseInt($("#pagebar_container span").text());
     mPage.html = document.documentElement.outerHTML;

@@ -5,7 +5,6 @@ var mPage = {
      */
     click_results: new Array(),
     hover_results: new Array(), 
-    url: "",
     query: "",
     page_id: 0,
     html: null,
@@ -27,12 +26,6 @@ var mPage = {
     getHtml: function () {
         return mPage.html;
     },
-    /**
-    * 获得当前的网址
-    */
-    getURL: function() {
-        return mPage.url; 
-    }
     /**
      * 返回当前页面所有点击结果信息
      */

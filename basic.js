@@ -320,7 +320,7 @@ var viewState = {
         }
 
         if (origin != "???"){
-            if (debug) console.log("extension is working on SERP, origin=" + origin);
+            if (debug) console.log("View state initialize, extension is working on SERP, origin=" + origin);
 
             document.addEventListener("visibilitychange", function (event) {
                 var hidden = event.target.webkitHidden;
@@ -350,11 +350,10 @@ var viewState = {
             });
         }
         else { //非SERP页面, 不进行任何记录
-            if (debug) console.log("extension is working on untracking page, nothing works");
+            if (debug) console.log("View state initialize, extension is working on untracking page, nothing works");
             //$(window).unbind('mousemove', viewState.mMove);
             //$(window).unbind('scroll', viewState.mScroll);
         }
-
     },
     /**
      * 发送信息
@@ -379,7 +378,7 @@ var viewState = {
             msg.end_timestamp = pageManager.end_timestamp;
             msg.dwell_time = pageManager.dwell_time;
             msg.page_timestamps = JSON.stringify(pageManager.page_timestamps);
-            msg.url = mPage.getURL();
+            msg.url = mPage.current_url; //current url in content.js
 
             msg.origin = origin; 
             msg.query = mPage.getQuery();
@@ -390,6 +389,9 @@ var viewState = {
             msg.hover_results = JSON.stringify(mPage.getHoverResults());
             chrome.runtime.sendMessage(msg);
             msg.initialize();
+        }
+        else{
+            if (debug) console.log("not in SERP, not need to send"); 
         }
     }
 };

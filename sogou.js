@@ -21,7 +21,6 @@ $("div.sponsored").remove();
 
 //不同页面的initialize和update不同 
 mPage.initialize = function () {
-    mPage.url = window.location.href;
     mPage.query = $("#upquery").val();
     mPage.page_id = parseInt($("#pagebar_container span").text());
     mPage.html = document.documentElement.outerHTML;

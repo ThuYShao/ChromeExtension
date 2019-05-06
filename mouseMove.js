@@ -193,7 +193,7 @@ var mRec = {
         mRec.scrollPath = null;
         if (debug) console.log("mRec initialize");
     },
-    //---以下为重新播放刚刚的操作的部分
+    //---以下为重新播放刚刚的操作的部分, 没有用到
     controlMouse: function (x, y) {
         $("#box").attr("style", "left:" + x + "px;top:" + y + "px;position:absolute;width:20px;height:20px;background:red;z-index:999999;");
     },

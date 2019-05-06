@@ -5,7 +5,7 @@ var dataUrl = baseUrl + "/exp_domain_expertise/data/"; // save data
 var taskUrl = baseUrl + "/exp_domain_expertise/task_type/"
 var username, password;
 var version = "1.0";
-var debug1 = true;
+var debug = true;
 //var debug1 = true;
 var lastReminder = 0;
 
@@ -154,22 +154,22 @@ chrome.runtime.onMessage.addListener(function (Msg, sender, sendResponse) {
     /**
      * 监听到储存serp_link链接关系请求
      */
-    if (Msg.link_store == "request") {
-        sessionStorage.setItem(Msg.url, Msg.serp_link);
-        sendResponse("sessionStorage done");
-        return;
-    }
+    // if (Msg.link_store == "request") {
+    //     sessionStorage.setItem(Msg.url, Msg.serp_link);
+    //     sendResponse("sessionStorage done");
+    //     return;
+    // }
     /**
      * 监听到查询serp_link链接关系请求
      */
-    if (Msg.ref_request != undefined) {
-        var serp_link = sessionStorage.getItem(Msg.ref_request);
-        if (serp_link != undefined)
-            sendResponse(serp_link);
-        else
-            sendResponse("");
-        return;
-    }
+    // if (Msg.ref_request != undefined) {
+    //     var serp_link = sessionStorage.getItem(Msg.ref_request);
+    //     if (serp_link != undefined)
+    //         sendResponse(serp_link);
+    //     else
+    //         sendResponse("");
+    //     return;
+    // }
     /**
      * 监听到执行脚本请求
      */
