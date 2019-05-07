@@ -6,6 +6,7 @@ var taskUrl = baseUrl + "/exp_domain_expertise/task_type/"
 var username, password;
 var version = "1.0";
 var debug = true;
+var debug1 = true;
 //var debug1 = true;
 var lastReminder = 0;
 

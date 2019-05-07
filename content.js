@@ -60,6 +60,11 @@ chrome.runtime.sendMessage({log_status: "request"}, function (response) {
          */
         document.addEventListener("DOMSubtreeModified", function (event) {
             if (current_url != window.location.href) {
+                if (debug) {
+                    console.log('current_url differ from window');
+                    console.log(current_url);
+                    console.log(window.location.href);
+                }
                 viewState.sendMessage();
 
                 // current_referrer = current_url;

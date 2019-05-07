@@ -2,6 +2,7 @@ if (debug) console.log('Server Mainpage is loaded')
 
 // get right type save in local storage
 function get_task_type(){
+    if (debug) console.log('Get Task type in server')
     var server_url = window.location.href;
     chrome.runtime.sendMessage({task_type: "request", url: server_url}, function (response) {
         if (debug) console.log(response); 
@@ -31,12 +32,6 @@ function get_task_type(){
 }
 
 get_task_type();
-
-if (debug) {
-    console.log('get task_id and task_type in server page');
-    console.log(localStorage['task_id']); 
-    console.log(localStorage['task_type']);
-}
 
 //initialize
 mPage.initialize = function () {

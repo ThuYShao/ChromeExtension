@@ -3,7 +3,7 @@ var msg = {
     /**
      * 发送消息标记
      */
-    send_flag: true,
+    send_flag: false,
     /**
      * 用户名,用于对应用户和log
      */
@@ -88,7 +88,7 @@ var msg = {
     //type: "", //只记录SERP页面的
 
     initialize: function () {
-        msg.send_flag = true;
+        msg.send_flag = false;
         msg.username = "";
         msg.task_id = ""; 
         msg.start_timestamp = 0;
@@ -373,12 +373,12 @@ var viewState = {
             if (debug) console.log("in SERP, send message");
             pageManager.getOut();
             mRec.end();
-
+            msg.send_flag = true;
             msg.start_timestamp = pageManager.start_timestamp;
             msg.end_timestamp = pageManager.end_timestamp;
             msg.dwell_time = pageManager.dwell_time;
             msg.page_timestamps = JSON.stringify(pageManager.page_timestamps);
-            msg.url = mPage.current_url; //current url in content.js
+            msg.url = current_url; //current url in content.js
 
             msg.origin = origin; 
             msg.query = mPage.getQuery();
