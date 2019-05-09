@@ -60,7 +60,8 @@
     // content-script可以配置多个规则
     {
       "matches": [
-        "*://www.sogou.com/web?*query=*"
+        "*://www.sogou.com/web?*query=*",
+        "*://www.sogou.com/websearch/sogou.jsp?*query=*"
       ],
       "js": [
         "mouseMove.js",
