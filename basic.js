@@ -69,7 +69,9 @@ var msg = {
     * 为一个hoverRes数组
     * 所有hover结果的信息
     */
-    hover_results: "", 
+    //hover_results: "", 
+    hover_in_results: "",
+    hover_out_results: "",
 
     /**
      * 直接来源网址
@@ -102,7 +104,8 @@ var msg = {
         msg.html = "";
         msg.mouse_moves = "";
         msg.clicked_results = "";
-        msg.hover_results = "";
+        msg.hover_in_results = "";
+        msg.hover_out_results = "";
     }
 };
 
@@ -386,7 +389,8 @@ var viewState = {
             msg.html = mPage.getHtml();
             msg.mouse_moves = JSON.stringify(mRec.getData());
             msg.clicked_results = JSON.stringify(mPage.getClickedResults());
-            msg.hover_results = JSON.stringify(mPage.getHoverResults());
+            msg.hover_in_results = JSON.stringify(mPage.getHoverInResults());
+            msg.hover_out_results = JSON.stringify(mPage.getHoverOutResults());
             chrome.runtime.sendMessage(msg);
             msg.initialize();
         }

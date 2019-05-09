@@ -4,7 +4,8 @@ var mPage = {
      * 返回值
      */
     click_results: new Array(),
-    hover_results: new Array(), 
+    hover_in_results: new Array(), 
+    hover_out_results: new Array(), 
     query: "",
     page_id: 0,
     html: null,
@@ -33,13 +34,16 @@ var mPage = {
         return mPage.click_results;
     },
     
-    getHoverResults: function() {
-        return mPage.hover_results; 
+    getHoverInResults: function() {
+        return mPage.hover_in_results; 
     }, 
+    getHoverOutResults: function(){
+        return mPage.hover_out_results; 
+    },
     /**
      * 点击事件的处理
      */
-    click: function (link_obj, type, id, father_id) {
+    myclick: function (link_obj, type, id, father_id) {
         var new_click = {
             href: $(link_obj).attr("href"),
             type: type, 
@@ -51,7 +55,7 @@ var mPage = {
     /**
      * 悬停事件的处理
      */
-    hover: function(link_obj, type, id, father_id){
+    /*hover: function(link_obj, type, id, father_id){
         var new_hover = {
             href: $(link_obj).attr("href"), 
             type: type, 
@@ -59,7 +63,29 @@ var mPage = {
             father_id: father_id
         };
         mPage.hover_results.push(new_hover);
-    }, 
+    },*/
+
+    myhandlerIn: function(link_obj, type, id, father_id) {
+        var new_hover_in = {
+            href: $(link_obj).attr("href"),
+            type: type,
+            id: id,
+            father_id: father_id,
+            timestamps_in: (new Date()).getTime()
+        };
+        mPage.hover_in_results.push(new_hover_in); 
+    },
+
+    myhandlerOut: function(link_obj, type, id, father_id) {
+        var new_hover_out = {
+            href: $(link_obj).attr("href"),
+            type: type,
+            id: id,
+            father_id: father_id,
+            timestamps_out: (new Date()).getTime()
+        };
+        mPage.hover_out_results.push(new_hover_out); 
+    },
 
     lastUpdate: 0,
     /**
@@ -75,7 +101,8 @@ var mPage = {
      */
     initialize: function () {
         mPage.click_results = new Array();
-        mPage.hover_results = new Array(); 
+        mPage.hover_in_results = new Array();
+        mPage.hover_out_results = new Array();  
         if (debug) console.log("mPage initialize");
     }
 };
