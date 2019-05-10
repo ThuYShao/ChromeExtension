@@ -7,8 +7,8 @@ if (localStorage['task_type'] != undefined && localStorage['task_type'] == 0){
 }
 
 
-//去掉右边其他信息 syq
-$("#right").children().not("#kmap_entity_div, #kmap_relation_div").remove();
+//去掉右边其他信息 原始界面不保留图谱关系
+$("#right").children().not("#kmap_entity_div").remove();
 
 //导航栏只保留网页
 $("ul.searchnav").children("li").not(".cur").remove();
@@ -30,7 +30,8 @@ setTimeout(mPage.initialize, 3000);
 
 mPage.update = function () {
     // 记录左边结果的点击信息和hover信息
-    $("div.results").children("div").each(function (id, element) {
+    var results_divs = $("div.results");
+    results_divs.children("div").each(function (id, element) {
         $(element).find("a").each(function (child_id, child_element) {
             if ($(child_element).attr("bindClick") == undefined) {
                 $(child_element).attr("bindClick", true);
@@ -42,7 +43,7 @@ mPage.update = function () {
     });
 
     // 记录左边结果的hover信息
-    $("div.results").children("div").each(function (id, element) {
+    results_divs.children("div").each(function (id, element) {
         $(element).find("a").each(function (child_id, child_element) {
             if ($(child_element).attr("bindHover") == undefined) {
                 $(child_element).attr("bindHover", true);
@@ -55,8 +56,9 @@ mPage.update = function () {
         });
     });
 
+    var kmap_div = $("div.rvr-model#kmap_entity_div");
     // 记录右边kmap_entity_div结果点击 hover信息
-    $("div.rvr-model#kmap_entity_div").children("ul").each(function(id, element){
+    kmap_div.children("ul").each(function(id, element){
         $(element).children("li").each(function(li_id, li_element){
             $(li_element).find("a").each(function (child_id, child_element){
                 if($(child_element).attr("bindClick") == undefined){
@@ -71,7 +73,7 @@ mPage.update = function () {
 
 
     // 记录右边结果kmap_entity_div结果hover信息
-    $("div.rvr-model#kmap_entity_div").children("ul").each(function(id, element){
+    kmap_div.children("ul").each(function(id, element){
         $(element).children("li").each(function(li_id, li_element){
             $(li_element).find("a").each(function (child_id, child_element){
                 if($(child_element).attr("bindHover") == undefined){
@@ -86,6 +88,4 @@ mPage.update = function () {
         });
     });
 
-    // 需要增加kmap_relation_div结果点击信息
-    // 需要增加kmap_relation_div结果hover 信息
 };
