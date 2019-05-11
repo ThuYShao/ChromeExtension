@@ -48,7 +48,8 @@ var mPage = {
             href: $(link_obj).attr("href"),
             type: type, 
             id: id, 
-            father_id: father_id
+            father_id: father_id,
+            timestamps_click: (new Date()).getTime()
         }; // add father_id, -1 from left, >=1 from kmap_entity
         mPage.click_results.push(new_click);
     },

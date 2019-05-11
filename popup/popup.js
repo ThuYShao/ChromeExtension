@@ -1,5 +1,5 @@
-// var baseUrl = "http://166.111.138.86:15016";
-var baseUrl = "http://127.0.0.1:8000";
+var baseUrl = "http://10.129.248.202:9999";
+//var baseUrl = "http://127.0.0.1:8000";
 var checkUrl = baseUrl + "/user/check/";
 var registerUrl = baseUrl + "/user/signup/";
 //var feedbackUrl = baseUrl + "/task/home/";
