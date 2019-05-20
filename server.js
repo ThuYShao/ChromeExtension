@@ -42,7 +42,7 @@ setTimeout(mPage.initialize, 3000);
 
 // 绑定click和hover信息
 mPage.update = function () {
-    // 记录左边结果的点击信息
+    // 记录左边结果的点击信息, 包括了中间结果推荐
     var result_divs = $("div.results");
     result_divs.children("div").each(function (id, element) {
         $(element).find("a").each(function (child_id, child_element) {
@@ -68,6 +68,7 @@ mPage.update = function () {
             }
         });
     });
+    
 
     var kmap_divs = $("div.rvr-model#kmap_entity_div");
     // 记录右边kmap_entity_div结果点击信息
@@ -77,7 +78,7 @@ mPage.update = function () {
                 if($(child_element).attr("bindClick") == undefined){
                     $(child_element).attr("bindClick", true);
                     $(child_element).click(function(){
-                        mPage.myclick($(this).get(0), "right", li_id+1, id+1)
+                        mPage.myclick($(this).get(0), "right", li_id+1, id+1);
                     });
                 }
             });
@@ -119,5 +120,47 @@ mPage.update = function () {
             mPage.myhandlerOut($(this).get(0), "tupu", 1, -1);
         });
     }
+
+    var up_hint = $("div.top-hintBox#stable_uphint");
+    up_hint.find("a").each(function (child_id, child_element) {
+        if($(child_element).attr("bindClick") == undefined){
+            $(child_element).attr("bindClick", true);
+            $(child_element).click(function () {
+                mPage.myclick($(this).get(0), "up_hint", child_id+1, -1);
+            });
+        }
+        if($(child_element).attr("bindHover") == undefined){
+            $(child_element).attr("bindHover", true);
+            $(child_element).hover(function () {
+                mPage.myhandlerIn($(this).get(0), "up_hint", child_id+1, -1);
+            }, function () {
+                mPage.myhandlerOut($(this).get(0), "up_hint", child_id+1, -1);
+            });
+        }
+    });
+
+    var down_hint = $("#hint_container.hint");
+    down_hint.find("tr").each(function (tr_id, tr_element) {
+        $(tr_element).children("td").each(function (td_id, td_element) {
+            $(td_element).find("a").each(function (child_id, child_element) {
+                if($(child_element).attr("bindClick") == undefined){
+                    $(child_element).attr("bindClick", true);
+                    $(child_element).click(function () {
+                        mPage.myclick($(this).get(0), "down_hint", td_id+1, tr_id+1);
+                    });
+                }
+                if($(child_element).attr("bindHover") == undefined){
+                    $(child_element).attr("bindHover", true);
+                    $(child_element).hover(function () {
+                        mPage.myhandlerIn($(this).get(0), "down_hint", td_id+1, tr_id+1);
+                    }, function () {
+                        mPage.myhandlerOut($(this).get(0), "down_hint", td_id+1, tr_id+1);
+                    });
+                }
+            });
+        });
+    });
+
+
 };
 

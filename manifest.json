@@ -45,7 +45,8 @@
 
     { 
       "matches": [
-        "*://10.129.248.202/exp_domain_expertise*search/"
+        "*://10.129.248.202/exp_domain_expertise*search/",
+        "*://127.0.0.1/exp_domain_expertise*search/"
       ],
       "js": [
         "mouseMove.js",
