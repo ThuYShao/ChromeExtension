@@ -1,5 +1,11 @@
 if (debug) console.log("Sogou Main Page is Loaded!");// remove suggested query on the top, mid and bottom
 
+chrome.storage.local.get({'task_type': -1}, function(items){
+    localStorage['task_type'] = items.task_type;
+});
+
+if (debug) console.log('get task type in sogou', localStorage['task_type']);
+
 // 根据task_type去掉右边
 if (localStorage['task_type'] != undefined && localStorage['task_type'] == 0){
     if (debug) console.log('remove right according to task_type in localStorage')

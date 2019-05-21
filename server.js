@@ -6,29 +6,16 @@ function get_task_type(){
     var server_url = window.location.href;
     chrome.runtime.sendMessage({task_type: "request", url: server_url}, function (response) {
         if (debug) console.log(response); 
-        if (response.task_type == 1) {
-            /*if (debug) {
-                console.log('get task_type');
-                console.log(response.task_type); 
-            }*/
-            localStorage['task_type'] = 1;
-        }else if (response.task_type == 0) {
-            /*if (debug) {
-                console.log('get task_type, right = 0');
-                console.log(response.task_type);
-            }*/
-            localStorage['task_type'] = 0;
+        if (response.task_type >= 0) {
+            if (debug) console.log('get task_id and task_type success');
         }else{
-            /*if (debug) {
-                console.log('get task_type failed, right=1');
-                console.log(response.task_type);
-            }*/
-            localStorage['task_type'] = 1;
+            if (debug) console.log('fail to get task_id and task_type');
         }
     });
 }
 
 get_task_type();
+
 
 //initialize
 mPage.initialize = function () {

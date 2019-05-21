@@ -106,6 +106,9 @@ function request_right(Url){
             if (debug1) console.log(data);
             localStorage['task_id'] = data.task_id ;
             result = data.task_type;
+            chrome.storage.local.set({'task_type':data.task_type, 'task_id':data.task_id}, function(){
+                if (debug) console.log('save task_type and task_id in chrome local', data.task_type, data.task_id);
+            });
             // console.log(localStorage['task_id']);
         },
         error: function () {
