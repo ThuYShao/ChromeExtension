@@ -8,7 +8,7 @@ if (debug) console.log('get task type in sogou', localStorage['task_type']);
 
 // 根据task_type去掉右边
 if (localStorage['task_type'] != undefined && localStorage['task_type'] == 0){
-    if (debug) console.log('remove right according to task_type in localStorage')
+    if (debug) console.log('remove right according to task_type in localStorage');
     $("#right").remove();
 }
 

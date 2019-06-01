@@ -1,3 +1,4 @@
+//console.log('basic.js loaded')
 /**这个是最终要发给服务器的数据 */
 var msg = {
     /**
