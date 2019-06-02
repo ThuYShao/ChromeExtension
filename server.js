@@ -40,7 +40,7 @@ mPage.update = function () {
     });
     
 
-    var kmap_divs = $("div.rvr-model#kmap_entity_div");
+    var kmap_divs = $("div#kmap_entity_div.rvr-model");
     // 记录右边kmap_entity_div结果点击信息
     kmap_divs.children("ul").each(function(id, element){
         $(element).children("li").each(function(li_id, li_element){
@@ -91,7 +91,7 @@ mPage.update = function () {
         });
     }
 
-    var up_hint = $("div.top-hintBox#stable_uphint");
+    var up_hint = $("div#stable_uphint.top-hintBox");
     up_hint.find("a").each(function (child_id, child_element) {
         if($(child_element).attr("bindClick") == undefined){
             $(child_element).attr("bindClick", true);
