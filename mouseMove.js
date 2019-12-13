@@ -191,7 +191,7 @@ var mRec={
     scroll:function(){
         var oPoint= new Point($(window).scrollLeft(),$(window).scrollTop(),(new Date()).getTime());
         if(mRec.scrollPath == null)
-            mRec.scrollPath = new Path(oPoint,"srcoll");
+            mRec.scrollPath = new Path(oPoint,"scroll");
         else
             mRec.scrollPath.add(oPoint);
     },
